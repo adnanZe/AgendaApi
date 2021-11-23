@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Homework AJAX</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <section class="contact">
+            <h2>Add New Contact</h2>
+            <form action="/action_page.php">
+                <div class="names-phone">
+                    <div class="first-labels">
+                        <label for="fname">First Name</label>
+                        <label for="lname">Last Name</label>
+                        <label for="mobile">Mobile Number</label>
+                    </div>
+    
+                    <div class="first-inputs">
+                        <input type="text" id="fname" name="fname"><br><br>
+                        <input type="text" id="lname" name="lname"><br><br>
+                        <input type="number" id="mobile" name="mobile"><br>
+                    </div>
+                </div>
+                <div class="address-col">
+                    <p class='address-p'>Address</p>
+                    <div class="subgroup-adress">
+                        <div class="second-labels">
+                            <label for="street">Street</label>
+                            <label for="number">Number</label>
+                            <label for="city">City</label>
+                            <label for="country">Country</label>
+                        </div>
+                    
+                        <div class="second-inputs">
+                            <input type="text" id="street" name="street"><br><br>
+                            <input type="text" id="number" name="number"><br><br>
+                            <input type="text" id="city" name="city"><br><br>
+                            <input type="text" id="country" name="country"><br>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" value="Submit">
+
+            </form>
+        </section>
+
+        <section class="contact-list">
+            <h2>Contact List</h2>
+        </section>
+        <script src="script.js"></script>
+    </body>
+</html>

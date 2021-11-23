@@ -1,0 +1,42 @@
+body{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.contact {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form { 
+    width: 100%;
+}
+.names-phone {
+    display: flex;
+    justify-content: space-around;
+}
+
+.first-labels {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.address-col{ 
+    display: flex;
+}
+
+.subgroup-adress {
+    display: flex;
+}
+
+.contact-list {
+    width: 40%;
+}
