@@ -1,0 +1,129 @@
+/* Global settings */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;700&display=swap");
+
+body {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* Header */
+header {
+  background-color: teal;
+  color: white;
+}
+
+.logo-img {
+  background-image: url("./img/agenda.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 50px;
+  height: 50px;
+  z-index: 1;
+}
+
+/* Add Contact */
+
+body .add--contact {
+  width: 40;
+}
+
+.input-label input {
+  width: 80vw;
+}
+
+input[type="submit"] {
+  padding: 0.5rem 1.5rem;
+}
+
+#update {
+  display: none;
+}
+
+/* Display contacts */
+
+.contact-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-item {
+  padding: 1rem;
+  border: 1.5px solid grey;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80vw;
+}
+
+.contact-list img {
+  height: 2rem;
+}
+
+.contact-list .contact-info:first-child {
+  margin-bottom: 1rem;
+}
+
+.contact-list .contact-info > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contact-info > div {
+  padding-bottom: 10px;
+}
+
+.contact-info > div:last-child {
+  padding-bottom: 0;
+}
+
+.contact-info img {
+  padding-right: 1rem;
+}
+
+.name-div p {
+  font-weight: bold;
+}
+
+.edit-button {
+  /* padding-right: 1rem; */
+}
+
+@media screen and (min-width: 700px) {
+  .input-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 80vw;
+  }
+  .input-label label {
+    display: block;
+  }
+  .input-label input {
+    width: 70%;
+  }
+  .list-item {
+    flex-direction: row;
+  }
+  .contact-list .contact-info > div {
+    justify-content: start;
+  }
+  .contact-list .contact-info:first-child {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  main {
+    display: flex;
+    align-items: flex-start;
+  }
+  .input-label {
+    width: 40vw;
+  }
+  .list-item {
+    width: 45vw;
+  }
+}

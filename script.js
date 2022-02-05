@@ -1,12 +1,24 @@
 // DOM stuff
 
 const sectionContactList = document.querySelector('.contact-list');
+const sendUser = document.getElementById('send');
+const updateUser = document.getElementById('update')
 
-document.getElementById("send").addEventListener("click", sendNewUser);
+sendUser.addEventListener("click", sendNewUser);
+document.addEventListener('DOMContentLoaded', getUsers)
+updateUser.addEventListener("click", editUser);
 
+// Get Users
 
+function getUsers() {
+  fetch("https://contact-agenda-rest-api.herokuapp.com/users")
+  .then(processResponse)
+  .then(renderUsers)
+  .then(cleanInputs);
+}
 
-// Sending new user
+// Send User
+
 function sendNewUser() {
   if(document.getElementById('fName').value.length == 0 || document.getElementById('lName').value.length == 0){
     return;
@@ -36,46 +48,63 @@ function sendNewUser() {
     .then(renderListItem);
 }
 
-// Delete user
+// Delete User
+
 function deleteUser(userId) {
   fetch("https://contact-agenda-rest-api.herokuapp.com/users/" + userId, {
     method: "DELETE",
   });
 }
 
-// Edit user
+// Edit User
+function editUser() {
+  const userid = document.getElementById("userid").value
 
-// function editUser(userId) {
-//   const newUser = {
-//     first_name: document.getElementById("fName").value,
-//     last_name: document.getElementById("lName").value,
-//     mobile: document.getElementById("phoneNr").value,
-//     address: {
-//       street: document.getElementById("street").value,
-//       number: document.getElementById("number").value,
-//       city: document.getElementById("city").value,
-//       country: document.getElementById("country").value
-//     }
-//   };
+  const newUser = {
+    first_name: document.getElementById("fName").value,
+    last_name: document.getElementById("lName").value,
+    mobile: document.getElementById("phoneNr").value,
+    address: {
+      street: document.getElementById("street").value,
+      number: document.getElementById("number").value,
+      city: document.getElementById("city").value,
+      country: document.getElementById("country").value
+    }
+  };
 
-//   fetch("https://contact-agenda-rest-api.herokuapp.com/users/" + userId, {
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//     method: "PUT",
-//     body: JSON.stringify(newUser),
-//   })
-//   .then(processResponse)
-//   .then(editUserRender);
-// }
-
-// Edit logic
-
-function editUserRender() {
-  document.getElementById("send").value = 'Update';
+  fetch("https://contact-agenda-rest-api.herokuapp.com/users/" + userid, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+    body: JSON.stringify(newUser),
+  })
+  .then(cleanUserList)
+  .then(getUsers)
 }
 
+// Edit functionality
+function editUserRender(userData) {
+  document.getElementById("userid").value = userData.id;
+
+  const inputsClear = ['lName', 'fName', 'phoneNr', 'street', 'number', 'city', 'country'];
+  for(const element of inputsClear){
+    document.getElementById(element).value = '';
+  }
+
+  document.getElementById("lName").value = userData.first_name;
+  document.getElementById("fName").value = userData.last_name;
+  if(userData['mobile']) document.getElementById("phoneNr").value = userData.mobile;
+  if(userData['address']){
+    if(userData.address['street']) document.getElementById("street").value = userData.address.street;
+    if(userData.address['number']) document.getElementById("number").value = userData.address.number;
+    if(userData.address['city']) document.getElementById("city").value = userData.address.city;
+    if(userData.address['country']) document.getElementById("country").value = userData.address.country;
+  }
+  sendUser.style.display = "none";
+  updateUser.style.display = "block";
+}
 
 // Render / display info
 function renderListItem(userData) {
@@ -99,10 +128,10 @@ function renderListItem(userData) {
   divName.appendChild(imgUser);
 
   const paragraphName = document.createElement('p');
-  paragraphName.innerText = `${userData.last_name} ${userData.first_name}`;
+  paragraphName.innerText = `${userData.first_name} ${userData.last_name}`;
   divName.appendChild(paragraphName);
 
-  if(userData.mobile.length != 0){
+  if(userData['mobile']){
     const divPhone = document.createElement('div');
     divPhone.classList.add('phone-div');
     divContactInfo.appendChild(divPhone);
@@ -117,19 +146,23 @@ function renderListItem(userData) {
     divPhone.appendChild(paragraphPhone);
   }
 
-  if(userData.address.street != 0 || userData.address.number.length != 0 ||userData.address.city.length != 0 || userData.address.country.length != 0 ) {
+  if(userData['address']){
     const divHome = document.createElement('div');
     divHome.classList.add('home-div');
     divContactInfo.appendChild(divHome);
-  
+
     const imgHome = document.createElement('img');
-    imgHome.alt = 'phone';
+    imgHome.alt = 'address home';
     imgHome.src = './img/home-address.png';
     divHome.appendChild(imgHome);
-  
+
     const paragraphHome = document.createElement('p');
-    paragraphHome.innerText = `${userData.address.street} ${userData.address.number}, ${userData.address.city}, ${userData.address.country}`;
     divHome.appendChild(paragraphHome);
+
+    if(userData.address['street']) {paragraphHome.innerText = `${userData.address.street}`;}
+    if(userData.address['number']) {paragraphHome.innerText += ` ${userData.address.number} `;}
+    if(userData.address['city']) {paragraphHome.innerText += ` ${userData.address.city}`;}
+    if(userData.address['country']) {paragraphHome.innerText += ` ${userData.address.country}`;}
   }
 
   const divEditDelete = document.createElement('div');
@@ -148,9 +181,8 @@ function renderListItem(userData) {
   imgDelete.alt = 'delete';
   divEditDelete.appendChild(imgDelete);
 
-  imgEdit.addEventListener('click', () =>{
-    editUserRender();
-    console.log(this.id);
+  imgEdit.addEventListener('click', () => {
+    editUserRender(userData);
   });
 
   imgDelete.addEventListener("click", function () {
@@ -161,20 +193,10 @@ function renderListItem(userData) {
   });
 }
 
-
-
-
-// Helper function 
+// Helper functions
 
 function processResponse(response) {
   return response.json();
-}
-
-
-function getUsers() {
-  fetch("https://contact-agenda-rest-api.herokuapp.com/users")
-  .then(processResponse)
-  .then(renderUsers);
 }
 
 function renderUsers(data) {
@@ -183,6 +205,23 @@ function renderUsers(data) {
   }
 }
 
-getUsers();
+function cleanUserList() {
+  let elements = document.querySelectorAll('.list-item');
+  for (let i = 0; i < elements.length; i++) {
+      elements[i].remove();
+  }
+}
+
+function cleanInputs() {
+  document.getElementById("fName").value = '';
+  document.getElementById("lName").value = '';
+  document.getElementById("phoneNr").value = '';
+  document.getElementById("street").value = '';
+  document.getElementById("number").value = '';
+  document.getElementById("city").value = '';
+  document.getElementById("country").value = '';
+  sendUser.style.display = "block";
+  updateUser.style.display = "none";
+}
 
 
