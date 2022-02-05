@@ -45,7 +45,8 @@ function sendNewUser() {
     body: JSON.stringify(newUser),
   })
     .then(processResponse)
-    .then(renderListItem);
+    .then(renderListItem)
+    .then(cleanInputs);
 }
 
 // Delete User
@@ -82,6 +83,7 @@ function editUser() {
   })
   .then(cleanUserList)
   .then(getUsers)
+  .then(cleanInputs);
 }
 
 // Edit functionality
